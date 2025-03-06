@@ -1,13 +1,14 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { app, auth, db, storage } from './config/utils/firebaseConnections';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Home from './models/auth/screens/Home';
-import LoginStack from './navigation/LoginStack';
+import LoginStack from './navigation/NavigationLogger';
+import NavigationLogger from './navigation/NavigationLogger';
 
 export default function App() {
   const [login, setLogin] = useState(false);
-  
+
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -19,16 +20,16 @@ export default function App() {
         setLogin(false);
       }
     });
-  },[]);
+  }, []);
 
-  if (login){
-    return( 
-    <View style={styles.container}>
-      <Home/>
-    </View>
-    ); 
+  if (login) {
+    return <LoginStack />;
   } else {
-    return <LoginStack/>; 
+    if (login) {
+      return <Home />
+    } else {
+      return <NavigationLogger />;
+    }
   }
 
 
